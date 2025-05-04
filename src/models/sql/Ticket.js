@@ -12,14 +12,19 @@ module.exports = (sequelize) => {
             allowNull: false
         },
         participants: {
-            type: DataTypes.JSON,
-            defaultValue: [],
+            type: DataTypes.TEXT,
+            defaultValue: '[]',
             get() {
                 const rawValue = this.getDataValue('participants');
-                return Array.isArray(rawValue) ? rawValue : [];
+                try {
+                    return JSON.parse(rawValue || '[]');
+                } catch (e) {
+                    return [];
+                }
             },
             set(value) {
-                this.setDataValue('participants', Array.isArray(value) ? value : []);
+                let arrayValue = Array.isArray(value) ? value : [];
+                this.setDataValue('participants', JSON.stringify(arrayValue));
             }
         },
         status: {
@@ -48,7 +53,7 @@ module.exports = (sequelize) => {
     });
 
     Ticket.prototype.addParticipant = async function(userId) {
-        const currentParticipants = this.participants || [];
+        const currentParticipants = this.participants;
         if (!currentParticipants.includes(userId)) {
             this.participants = [...currentParticipants, userId];
             await this.save();
@@ -57,7 +62,7 @@ module.exports = (sequelize) => {
     };
 
     Ticket.prototype.removeParticipant = async function(userId) {
-        const currentParticipants = this.participants || [];
+        const currentParticipants = this.participants;
         this.participants = currentParticipants.filter(id => id !== userId);
         await this.save();
         return this;

@@ -36,6 +36,10 @@ module.exports = {
 
         const userToRemove = interaction.options.getUser('user');
 
+        console.log('Debug - Participants:', ticket.participants);
+        console.log('Debug - User to remove ID:', userToRemove.id);
+        console.log('Debug - Raw participants value:', ticket.getDataValue('participants'));
+
         if (userToRemove.id === ticket.ownerId) {
             return interaction.editReply({
                 content: '❌ You cannot remove the ticket owner!',
