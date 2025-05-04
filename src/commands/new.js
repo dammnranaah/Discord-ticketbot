@@ -9,8 +9,10 @@ module.exports = {
     async execute(interaction) {
         const Ticket = db.getTicketModel();
         const existingTicket = await Ticket.findOne({
-            ownerId: interaction.user.id,
-            status: 'OPEN'
+            where: {
+                ownerId: interaction.user.id,
+                status: 'OPEN'
+            }
         });
 
         if (existingTicket) {

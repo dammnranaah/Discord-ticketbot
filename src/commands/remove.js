@@ -13,8 +13,10 @@ module.exports = {
     async execute(interaction) {
         const Ticket = db.getTicketModel();
         const ticket = await Ticket.findOne({ 
-            channelId: interaction.channel.id,
-            status: 'OPEN'
+            where: {
+                channelId: interaction.channel.id,
+                status: 'OPEN'
+            }
         });
 
         if (!ticket) {
