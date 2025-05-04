@@ -1,5 +1,5 @@
 {
-  "name": "rollerite-ticket-bot",
+  "name": "discord-ticket-bot",
   "version": "1.0.0",
   "description": "A Discord ticket management bot with slash commands",
   "main": "src/index.js",
